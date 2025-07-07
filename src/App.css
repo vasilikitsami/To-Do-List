@@ -1,38 +1,129 @@
+/* === App.css === */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #8758ff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 60px;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.TodoWrapper {
+  background: #1A1A40;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 550px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.TodoForm {
+  width: 100%;
+  background: #2c2c5a;
+  padding: 1.5rem;
+  border: 2px solid #8758ff;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 10px rgba(135, 88, 255, 0.2);
 }
 
-.App-link {
-  color: #61dafb;
+.todo-input {
+  outline: none;
+  background: none;
+  border: 1px solid #8758ff;
+  padding: 0.7rem 1rem;
+  width: 100%;
+  max-width: 350px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.todo-input::placeholder {
+  color: #ffffff88;
+}
+
+.todo-btn {
+  background: #8758ff;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.todo-btn:hover {
+  background: #6f46ff;
+}
+
+.Todo {
+  background: #2b2b5a;
+  border: 2px solid #a892fe;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.Todo:hover {
+  background: #3a3a6d;
+}
+
+.Todo p {
+  margin: 0;
+  flex: 1;
+  cursor: pointer;
+  word-break: break-word;
+  font-size: 1rem;
+}
+
+.completed {
+  color: #c5aeff;
+  text-decoration: line-through;
+}
+
+.Todo div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  transform: scale(1.1);
 }
