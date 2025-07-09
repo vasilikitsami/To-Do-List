@@ -17,12 +17,14 @@ export const ToDoWrapper = () => {
 
     const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', '') //save what is written in search bar
 
-    const [showOnlyIncomplete, setShowOnlyIncomplete] = useLocalStorage('showOnlyIncomplete', false) //if true -> only incompleted tasks
+    const [showOnlyIncomplete, setShowOnlyIncomplete] = useLocalStorage('showOnlyIncompletge', false) //if true -> only incompleted tasks
 
     //Create new task and add in todos array
     const addTodo = (todo) => {
-        const newTodo = {id: uuidv4(), task: todo,
-        completed: false, isEditing: false, 
+        const newTodo = {
+        id: uuidv4(), task: todo,
+        completed: false, 
+        isEditing: false, 
         createdAt: new Date().toISOString() //save date of addition
         }
         setTodos ([...todos,newTodo ])
@@ -39,9 +41,10 @@ export const ToDoWrapper = () => {
         setTodos(todos.filter(todo => todo.id !== id))
     }
 
+    //Change isEditing to true: edit form appears
     const editTodo = id => {
-        setTodos(todos.map(todo => todo.id === id ? {...todo, 
-            isEditing: !todo.isEditing} : todo))
+        setTodos(todos.map(todo => todo.id === id 
+            ? {...todo, isEditing: !todo.isEditing} : todo))
     }  
     
     //Update task with edited text
