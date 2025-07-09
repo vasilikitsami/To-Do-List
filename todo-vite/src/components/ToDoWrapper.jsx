@@ -17,7 +17,7 @@ export const ToDoWrapper = () => {
 
     const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', '') //save what is written in search bar
 
-    const [showOnlyIncomplete, setShowOnlyIncomplete] = useLocalStorage('showOnlyIncompleτe', false) //if true -> only incompleted tasks
+    const [showOnlyIncomplete, setShowOnlyIncomplete] = useLocalStorage('showOnlyIncomplete', false) //if true -> only incompleted tasks
 
     //Create new task and add in todos array
     const addTodo = (todo) => {
