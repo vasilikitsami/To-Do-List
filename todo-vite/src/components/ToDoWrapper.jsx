@@ -70,7 +70,7 @@ export const ToDoWrapper = () => {
         <div className='ToDoWrapper'>
             <h1>Get Things Done!</h1>
             <SearchBar setSearchTerm={setSearchTerm} />
-            <CheckBox setShowOnlyIncomplete={setShowOnlyIncomplete} />
+            <CheckBox showOnlyIncomplete={showOnlyIncomplete} setShowOnlyIncomplete={setShowOnlyIncomplete}  />
             <SortOptions sortMethod={sortMethod} setSortMethod={setSortMethod} />
             <ToDoForm  addTodo={addTodo} />
             {searchTerm.trim() !== '' && filteredTodos.length === 0 ?(
