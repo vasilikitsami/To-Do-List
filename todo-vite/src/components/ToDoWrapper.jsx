@@ -65,7 +65,7 @@ export const ToDoWrapper = () => {
             <h1>Get Things Done!</h1>
             <SearchBar setSearchTerm={setSearchTerm} />
             <CheckBox setShowOnlyIncomplete={setShowOnlyIncomplete} />
-            <SortOptions setSortMethod={setSortMethod} />
+            <SortOptions sortMethod={sortMethod} setSortMethod={setSortMethod} />
             <ToDoForm  addTodo={addTodo} />
             {searchTerm.trim() !== '' && filteredTodos.length === 0 ?(
                 <p style={{color:'#fff', marginTop:'1rem'}}>No matching tasks found.</p>
