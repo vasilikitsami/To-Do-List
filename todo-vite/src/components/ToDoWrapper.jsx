@@ -56,10 +56,13 @@ export const ToDoWrapper = () => {
     //Sorting Options
     const sortedTodos = sortTodosByMethod(todos, sortMethod);
 
+    //Search Tasks
     const filteredTodos = sortedTodos.filter(todo =>{
-       const matchesSearch = searchTerm.trim() === '' || todo.task.toLowerCase().includes(searchTerm.toLowerCase())
+       //checks if searchTerm is included in task 
+       const matchesSearch = searchTerm.trim() === '' || todo.task.toLowerCase().includes(searchTerm.toLowerCase()) 
+       //checks if only incompleted tasks are filtered
        const matchesCompletion = !showOnlyIncomplete || (!todo.completed && !todo.checked)
-       return matchesSearch && matchesCompletion
+       return matchesSearch && matchesCompletion //only tasks that meet both criteria are returned
     })
   
 
