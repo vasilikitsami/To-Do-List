@@ -8,11 +8,12 @@
         <section class="errors">
             <ul>
                 {{# each errors }}
-                    <li>{{ this.msg }}</li>
+                    <li>{{this.msg}}</li>
                 {{/each}}
             </ul>
         </section>
     {{/if}}
+
 <form action="/submit" method="post">
   <div class="input">
     <label for="email">E-Mail</label>
@@ -28,3 +29,5 @@
   </div>
   <button type="submit">Sign up</button>
 </form>
+
+{{/if}}

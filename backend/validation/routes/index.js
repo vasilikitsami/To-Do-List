@@ -1,26 +1,33 @@
 var express = require('express');
+const { check, validationResult } = require('express-validator');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Form Validation', succsess: false, errors: req.seq.errors });
+  res.render('index', { title: 'Form Validation', succsess: req.session?.success,
+    errors: req.session?.errors || [] });
   req.session.errors = null;
 });
 
-router.post('/submit', function(res, req, next){
-  //Chech Validity
-  req.check('email', 'Invalid email address').isEmail();
-  req.check('password', 'Password is invalid').isLength({min: 4}).equals(req.body.confirmPassword);
-
-  var errors = req.validationErrors();
-  if (errors) {
-    req.session.errors = errors;
-    req.session.success = false;
-  } else {
-    req.session.success = true;
+router.post('/submit',
+  [
+    check('email', 'Invalid email address').isEmail(),
+    check('password', 'Password is invalid')
+      .isLength({ min: 4 })
+      .custom((value, { req }) => value === req.body.confirmPassword)
+  ],
+  function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      req.session.errors = errors.array();
+      req.session.success = false;
+    } else {
+      req.session.success = true;
+      req.session.errors = null;
+    }
+    res.redirect('/');
   }
-  res.redirect('/');
+);
 
-});
 
 module.exports = router;
