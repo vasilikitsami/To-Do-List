@@ -27,6 +27,8 @@ export const ToDoWrapper = () => {
     const [showOnlyIncomplete, setShowOnlyIncomplete] = useState(false) //if true -> only incompleted tasks
 
     useEffect(() => {
+
+        // Fetch existing preferences from sortMethod and searchTerm
         fetch('http://localhost:4001/api/preferences')
             .then(res => res.json())    
             .then(data => {
@@ -41,19 +43,20 @@ export const ToDoWrapper = () => {
  },  []);
 
     useEffect(() => {
-  if (!sortMethod && !searchTerm) return;
+    if (!sortMethod && !searchTerm) return;
 
-  fetch('http://localhost:4001/api/preferences', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sortMethod, searchTerm }),
-  })
-    .then(res => res.json())
-    .then(data => console.log("Preferences saved:", data))
-    .catch(err => {
-      console.error('Error updating preferences:', err);
-    });
-}, [sortMethod, searchTerm]);
+    // Save preferences to the backend whenever sortMethod or searchTerm changes
+    fetch('http://localhost:4001/api/preferences', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sortMethod, searchTerm }),
+    })
+        .then(res => res.json())
+        .then(data => console.log("Preferences saved:", data))
+        .catch(err => {
+        console.error('Error updating preferences:', err);
+        });
+    }, [sortMethod, searchTerm]);
 
     //Create new task and add in todos array
     const addTodo = async (todo) => {
@@ -64,6 +67,7 @@ export const ToDoWrapper = () => {
         createdAt: new Date().toISOString() //save date of addition
         }
 
+    //load exsisting todos from the backend
         const res = await fetch('http://localhost:4001/api/todos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -83,6 +87,7 @@ export const ToDoWrapper = () => {
         const todoToUpdate = todos.find(t => t._id === id);
         const updatedTodo = { ...todoToUpdate, completed: !todoToUpdate.completed };
 
+        //use fetch to update the task in the backend
         await fetch(`http://localhost:4001/api/todos/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -135,6 +140,41 @@ export const ToDoWrapper = () => {
        const matchesCompletion = !showOnlyIncomplete || (!todo.completed && !todo.checked)
        return matchesSearch && matchesCompletion //only tasks that meet both criteria are returned
     })
+
+    const saveFilteredResults = async () => {
+        const resultsToSave = {
+            sortMethod,
+            searchTerm,
+            results: filteredTodos.map(({task, completed, createdAt}) => ({
+                task,
+                completed,
+                createdAt
+            })
+            )
+        };
+        await fetch('http://localhost:4001/api/results', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(resultsToSave)
+        });
+
+        try {
+            const response = await fetch('http://localhost:4001/api/results', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(resultsToSave)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save results');
+            }
+
+            const savedResults = await response.json();
+            console.log('Results saved:', savedResults);
+        } catch (error) {
+            console.error('Error saving results:', error);
+        }
+    }
   
     console.log('Rendering todos:', filteredTodos)
 

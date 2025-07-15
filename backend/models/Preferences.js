@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//structure for a preferences document
 const preferencesSchema = new mongoose.Schema({
     sortMethod : {
         type: String,   
@@ -9,6 +10,7 @@ const preferencesSchema = new mongoose.Schema({
         type: String,   
         default: '',
     },
+    //automatically add createdAt and updatedAt 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Preferences', preferencesSchema);  

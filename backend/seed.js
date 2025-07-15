@@ -5,6 +5,8 @@ const Todo = require('./models/Todo');
 dotenv.config();
 
 mongoose.connect(process.env.MONGO_URI) 
+
+    // Connect to MongoDB using the URI from .env file
     .then(async () => {
         console.log('Connected to MongoDB. Seeding...');
 
@@ -17,6 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
             { task: 'Deploy the App', completed: false }
         ];
 
+        // Insert seed data into the database Todo
         await Todo.insertMany(todos);
         console.log('Seed data inserted');
         process.exit();
