@@ -1,29 +1,27 @@
-const getTodos = (req, res) => {
-    let todos = [
-    { id: '1', task: 'Buy groceries', completed: false },
-    { id: '2', task: 'Walk the dog', completed: true },
-];
+let Todo = require('../models/Todo');
 
+const getTodos = async (req, res) => {
+
+    const todos = await Todo.find();
     return res.status(200).json(todos);
 };
 
-const addTodo = (req, res) => {
-    const newTodo = req.body;
-    todos.push(newTodo);
-    return res.status(200).json(newTodo);
+const addTodo = async (req, res) => {
+    const newTodo = new Todo(req.body);
+    await newTodo.save();
+    res.status(200).json(newTodo);
 }
 
-const updateTodo = (req, res) => {
+const updateTodo = async (req, res) => {
     const {id} = req.params;
-    const updatedTodo = req.body;
-    todos = todos.map (todo => (todo.id === id ? {...todo, ...updatedTodo} : todo));
-    return res.status(200).json(updatedTodo);
+    const updatedTodo = await Todo.findByIdAndUpdate(id, req.body, { new: true });
+    res.status(200).json(updatedTodo);
 }
 
-const deleteTodo = (req, res) => {
+const deleteTodo = async (req, res) => {
     const {id} = req.params;
-    todos = todos.filter(todo => todo.id !== id);
-    return res.status(204).send();
+    await Todo.findByIdAndDelete(id);
+    res.status(204).send();
 }
 
 module.exports = {
