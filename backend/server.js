@@ -6,6 +6,10 @@ const toDoRoutes = require('./routes/toDoRoutes');
 const userRoutes = require('./routes/userRoutes');
 const preferencesRoutes = require('./routes/preferencesRoutes');
 const resultsRoutes = require('./routes/resultsRoutes');
+const connectDB = require('./config/mongo-db');
+
+connectDB();
+
 
 const cors = require('cors');
 const PORT = process.env.PORT || 4001;
@@ -22,12 +26,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/preferences', preferencesRoutes);
 app.use('/api/results', resultsRoutes);
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(PORT, () => 
-        console.log(`Server running on http://localhost:${PORT}`));
-    }).catch(err => {
-        console.error('MongoDB connection error:', err);
-    });
 
+app.listen(PORT, () => 
+    console.log(`Server running on http://localhost:${PORT}`));
