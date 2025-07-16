@@ -1,6 +1,6 @@
 import express from 'express';
-import router from express.Router();
-import { getTodos, addTodo, updateTodo, deleteTodo } from '../controllers/toDoController';
+const router = express.Router();
+import { getTodos, addTodo, updateTodo, deleteTodo } from '../controllers/toDoController.js';
 
 // GET /api/todos
 router.get('/', getTodos);

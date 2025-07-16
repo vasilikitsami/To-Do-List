@@ -1,6 +1,6 @@
-import Results from '../models/results';
+import Results from '../models/results.js';
 
-const saveResults = async (req, res) => {
+export const saveResults = async (req, res) => {
     const { sortMethod, searchTerm, results } = req.body;
 
     try {
@@ -12,12 +12,8 @@ const saveResults = async (req, res) => {
 
 }
 
-const getResults = async (req, res) => {
+export const getResults = async (req, res) => {
         const all = await Results.find().sort({ createdAt: -1 });
         res.json(all);
     };
 
-export {
-    saveResults,
-    getResults
-};

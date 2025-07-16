@@ -12,6 +12,7 @@ import {sortTodosByMethod} from '../utils';
 
 export const ToDoWrapper = () => {
 
+    //Fetch todo list from backend and store it in state
     useEffect(() => {
         fetch('http://localhost:4001/api/todos')
             .then(res => res.json())
@@ -43,20 +44,20 @@ export const ToDoWrapper = () => {
  },  []);
 
     useEffect(() => {
-    if (!sortMethod && !searchTerm) return;
+        if (!sortMethod && !searchTerm) return;
 
-    // Save preferences to the backend whenever sortMethod or searchTerm changes
-    fetch('http://localhost:4001/api/preferences', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sortMethod, searchTerm }),
-    })
-        .then(res => res.json())
-        .then(data => console.log("Preferences saved:", data))
-        .catch(err => {
-        console.error('Error updating preferences:', err);
-        });
-    }, [sortMethod, searchTerm]);
+        // Save preferences to the backend whenever sortMethod or searchTerm changes
+        fetch('http://localhost:4001/api/preferences', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sortMethod, searchTerm }),
+        })
+            .then(res => res.json())
+            .then(data => console.log("Preferences saved:", data))
+            .catch(err => {
+            console.error('Error updating preferences:', err);
+            });
+        }, [sortMethod, searchTerm]);
 
     //Create new task and add in todos array
     const addTodo = async (todo) => {

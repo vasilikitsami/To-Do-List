@@ -1,6 +1,6 @@
 import express from 'express';
-import router from express.Router();
-import { getUsers } from '../controllers/userController';
+const router = express.Router();
+import { getUsers } from '../controllers/userController.js';
 
 // GET /api/todos
 router.get('/', getUsers);

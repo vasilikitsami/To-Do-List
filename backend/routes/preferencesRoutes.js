@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPreferences, updatePreferences } from '../controllers/preferencesController';
+import { getPreferences, updatePreferences } from '../controllers/preferencesController.js';
 
 //create a router object to define the routes for preferences
 const router = express.Router();

@@ -1,4 +1,4 @@
-import Preferences from '../models/Preferences';
+import Preferences from '../models/Preferences.js';
 
 const getPreferences = async (req, res) => {
 
