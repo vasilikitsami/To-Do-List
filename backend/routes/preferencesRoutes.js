@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import { getPreferences, updatePreferences } from '../controllers/preferencesController';
+
 //create a router object to define the routes for preferences
 const router = express.Router();
-const { getPreferences, updatePreferences } = require('../controllers/preferencesController');
 
 router.get('/', getPreferences);
 router.put('/', updatePreferences);
 
-module.exports = router;
+export default router;

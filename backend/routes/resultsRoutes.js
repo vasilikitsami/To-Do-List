@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const { saveResults, getResults } = require('../controllers/resultsController');
+import express from 'express';
+import router from express.Router();
+import { saveResults, getResults } from '../controllers/resultsController';
 
 router.post('/', saveResults);
 router.get('/', getResults);    
 
-module.exports = router;
+export default router;

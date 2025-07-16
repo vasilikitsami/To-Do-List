@@ -1,4 +1,4 @@
-const Results = require('../models/results');
+import Results from '../models/results';
 
 const saveResults = async (req, res) => {
     const { sortMethod, searchTerm, results } = req.body;
@@ -17,7 +17,7 @@ const getResults = async (req, res) => {
         res.json(all);
     };
 
-module.exports = {
+export {
     saveResults,
     getResults
 };

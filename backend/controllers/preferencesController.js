@@ -1,4 +1,4 @@
-const Preferences = require('../models/Preferences');
+import Preferences from '../models/Preferences';
 
 const getPreferences = async (req, res) => {
 
@@ -26,7 +26,8 @@ const updatePreferences = async (req, res) => {
         return res.json(newPreferences);
     }
 };
-module.exports = {
+
+export {
     getPreferences,
     updatePreferences
 };

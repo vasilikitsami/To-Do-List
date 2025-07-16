@@ -6,6 +6,6 @@ const getUsers = (req, res) => {
   return res.status(200).json(sampleUsers);
 };
 
-module.exports = {
+export default {
   getUsers,
 };

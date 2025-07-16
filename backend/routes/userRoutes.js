@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const { getUsers } = require('../controllers/userController');
+import express from 'express';
+import router from express.Router();
+import { getUsers } from '../controllers/userController';
 
 // GET /api/todos
 router.get('/', getUsers);
 
-module.exports = router;
+export default router;

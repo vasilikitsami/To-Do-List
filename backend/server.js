@@ -1,17 +1,17 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import express from 'express';
+import mongoose from 'mongoose';
 require('dotenv').config();
 
-const toDoRoutes = require('./routes/toDoRoutes');
-const userRoutes = require('./routes/userRoutes');
-const preferencesRoutes = require('./routes/preferencesRoutes');
-const resultsRoutes = require('./routes/resultsRoutes');
-const connectDB = require('./config/mongo-db');
+import toDoRoutes from './routes/toDoRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import preferencesRoutes from './routes/preferencesRoutes.js';
+import resultsRoutes from './routes/resultsRoutes.js';
+import connectDB from './config/mongo-db.js';
 
 connectDB();
 
 
-const cors = require('cors');
+import cors from 'cors';
 const PORT = process.env.PORT || 4001;
 
 const app = express();

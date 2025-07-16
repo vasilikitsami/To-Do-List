@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 //structure for a preferences document
 const preferencesSchema = new mongoose.Schema({
@@ -13,4 +13,4 @@ const preferencesSchema = new mongoose.Schema({
     //automatically add createdAt and updatedAt 
 }, { timestamps: true });
 
-module.exports = mongoose.model('Preferences', preferencesSchema);  
+export default mongoose.model('Preferences', preferencesSchema);  
