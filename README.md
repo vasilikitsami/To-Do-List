@@ -39,19 +39,33 @@ The backend is built with **Node.js**, **Express**, and **MongoDB**, while the f
 ## 🧩 Project Architecture
 
 To-Do-List/
+
 ├── backend/
+
 │ ├── controllers/ # Request handling logic (CRUD, preferences)
+
 │ ├── models/ # Mongoose schemas (Todo, Preferences, Results)
+
 │ ├── routes/ # API endpoints, mapped to controller functions
+
 │ ├── config/ # MongoDB connection
+
 │ ├── seed.js # Preload sample data
+
 │ └── server.js # App initialization and Express setup
+
 ├── frontend/
+
 │ ├── components/ # All UI components (ToDo, Form, Filters, Edit, etc.)
+
 │ ├── App.jsx # Main 
+
 │ └── main.jsx # React entry point
+
 ├── .env # Environment config
+
 ├── package.json # Dependencies and scripts
+
 └── README.md # Project documentation
 
 ## 🛠️ Installation & Setup
