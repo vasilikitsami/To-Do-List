@@ -70,112 +70,119 @@ To-Do-List/
 
 ## 🛠️ Installation & Setup
 
-### 1. Clone the repository
+### 🔧 Backend
 
 ```bash
-git clone https://github.com/vasilikitsami/To-Do-List.git
-cd To-Do-List
-
-### 2. Setup Backend
-
 cd backend
 npm install
+```
 
-##Add an .env file:
+Create a `.env` file:
 
-MONGO_URI=mongodb://127.0.0.1:27017/todolist
-PORT=4001
+```env
+MONGO_URI=your_mongodb_uri
+```
 
-##Start the server:
+Start the backend:
 
+```bash
 npm run dev
+```
 
-### 3. Setup Frontend
+### 💻 Frontend
 
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
+---
 
-🗄️ Database Schema
+## 🗄️ Database Schema
 
-✅ Todo Model
+### ✅ `Todo` Model
 
+```js
 {
   task: String,
   completed: Boolean,
   isEditing: Boolean,
   createdAt: Date
 }
+```
 
+### ⚙️ `Preferences` Model
 
-⚙️ Preferences Model
-
+```js
 {
   sortMethod: String,
   searchTerm: String
 }
+```
 
+### 📊 `Results` Model
 
-📊 Results Model
-
+```js
 {
   sortMethod: String,
   searchTerm: String,
-  results: [{ task, completed, createdAt }]
+  results: [
+    {
+      task: String,
+      completed: Boolean,
+      createdAt: Date
+    }
+  ]
 }
+```
 
-🌐 API Endpoints
+---
 
-Method	   Endpoint	           Description
-GET	       /api/todos	       Get all todos
-POST	   /api/todos	       Create a new todo
-PUT	       /api/todos/:id	   Update a todo
-DELETE	   /api/todos/:id	   Delete a todo
-GET	       /api/preferences	   Fetch user preferences
-PUT	       /api/preferences	   Update user preferences
-POST	   /api/results    	   Save filtered results
-GET	       /api/users	       Return dummy users (testing endpoint)
+## 🌐 API Endpoints
 
+| Method | Endpoint             | Description                            |
+|--------|----------------------|----------------------------------------|
+| GET    | `/api/todos`         | Get all todos                          |
+| POST   | `/api/todos`         | Create a new todo                      |
+| PUT    | `/api/todos/:id`     | Update a todo                          |
+| DELETE | `/api/todos/:id`     | Delete a todo                          |
+| GET    | `/api/preferences`   | Fetch saved sort/search preferences    |
+| PUT    | `/api/preferences`   | Save updated preferences               |
+| POST   | `/api/results`       | Save filtered results                  |
+| GET    | `/api/users`         | Return sample users (testing)          |
 
-💻 Frontend Functionality
+---
 
+## 💻 Frontend Functionality
 
-✅ Add / Edit / Delete Todos
+### ✅ Add / Edit / Delete Todos
 
-- Users can add a task using the input form.
+- Create a task using the form
+- Inline edit existing todos
+- Delete individual tasks
+- Completion toggle applies strike-through
 
-- Tasks can be edited or deleted with a single click.
+### 🔍 Live Search & Filter
 
-- Completed tasks are shown with a strikethrough style.
+- Search field updates the task list in real time
+- A checkbox filters only incomplete tasks
 
+### 🔃 Sorting
 
-🔍 Live Search & Filter
+- Sort tasks by:
+  - Alphabetically
+  - By creation date
+  - Default order
 
-- Users can filter tasks by name using the search bar.
+### 🧠 User Preferences
 
-- Toggle to display only incomplete tasks with a checkbox.
-
-
-🔃 Sorting
-
-- Users can sort tasks by:
-
-    - Default (as added)
-
-    - Alphabetical order
-
-    - Creation Date
-
-
-🧠 User Preferences
-
-- The selected sort option and search term are automatically saved to the backend.
-
-- When refreshing the page, preferences are reloaded and applied to maintain continuity.
+- When sort/search settings are changed, they are:
+  - Saved in MongoDB
+  - Re-applied on page reload
 
 
-🙋‍♀️ Author
+## 🧑‍💻 Author
 Developed by Vasiliki Tsami as part of a full-stack internship exercise.
 
 
