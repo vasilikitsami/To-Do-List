@@ -9,7 +9,6 @@ import { CheckBox } from './CheckBox';
 import {sortTodosByMethod} from '../utils';
 
 
-
 export const ToDoWrapper = () => {
 
     //Fetch todo list from backend and store it in state

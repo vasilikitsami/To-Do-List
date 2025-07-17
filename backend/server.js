@@ -1,7 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-dotenv.config();
 
 import toDoRoutes from './routes/toDoRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -10,6 +9,7 @@ import resultsRoutes from './routes/resultsRoutes.js';
 import connectDB from './config/mongo-db.js';
 
 connectDB();
+dotenv.config();
 
 
 import cors from 'cors';

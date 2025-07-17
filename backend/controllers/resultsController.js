@@ -17,3 +17,7 @@ export const getResults = async (req, res) => {
         res.json(all);
     };
 
+export {
+    saveResults,
+    getResults
+};
