@@ -3,6 +3,7 @@ import Todo from "../models/Todo.js";
 export const getTodos = async (req, res) => {
   try {
     const todos = await Todo.find();
+    console.log("Fetched todos:", todos);
     res.status(200).json(todos);
   } catch (error) {
     console.error("Error fetching todos:", error);

@@ -179,6 +179,7 @@ export const ToDoWrapper = () => {
   };
 
   console.log("Rendering todos:", filteredTodos);
+  console.log("todos:", todos);
 
   return (
     <div className="ToDoWrapper">
