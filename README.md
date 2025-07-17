@@ -80,7 +80,8 @@ npm install
 Create a `.env` file:
 
 ```env
-MONGO_URI=your_mongodb_uri
+MONGO_URI=mongodb://127.0.0.1:27017/todolist
+PORT=4001
 ```
 
 Start the backend:
