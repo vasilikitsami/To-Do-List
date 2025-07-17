@@ -1,22 +1,21 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+dotenv.config();
 
 import toDoRoutes from "./routes/toDoRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import preferencesRoutes from "./routes/preferencesRoutes.js";
 import resultsRoutes from "./routes/resultsRoutes.js";
-import connectDB from "./config/mongo-db.js";
 
+import connectDB from "./config/mongo-db.js";
 connectDB();
-dotenv.config();
 
 import cors from "cors";
 const PORT = process.env.PORT || 4001;
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 
 app.use(cors({ origin: "*" }));

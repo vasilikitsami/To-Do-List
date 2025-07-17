@@ -1,18 +1,15 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
+import dotenv from "dotenv";
 dotenv.config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to local MongoDB (todoDB)");
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB connected to ${conn.connection.host}`);
   } catch (error) {
-    console.error("MongoDB connection error:", error.message);
-    process.exit(1); // stop the app if DB fails
+    console.error(`Error: ${error.message}`);
+    process.exit(1); // Exit the process with failure
   }
 };
 
