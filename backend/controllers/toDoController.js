@@ -45,3 +45,45 @@ export const deleteTodo = async (req, res) => {
     res.status(500).json({ message: "Failed to delete todo" });
   }
 };
+
+export const getPreferences = async (req, res) => {
+  const preferences = await Preferences.findOne();
+  if (!preferences) {
+    return res.json(await Preferences.findOne());
+  }
+  res.json(preferences);
+};
+
+export const updatePreferences = async (req, res) => {
+  const { sortMethod, searchTerm } = req.body;
+  const preferences = await Preferences.findOne();
+  if (preferences) {
+    preferences.sortMethod = sortMethod;
+    preferences.searchTerm = searchTerm;
+    await preferences.save();
+    return res.json(preferences);
+  } else {
+    const newPreferences = new Preferences({ sortMethod, searchTerm });
+    return res.json(newPreferences);
+  }
+};
+
+// Results Controllers
+export const saveResults = async (req, res) => {
+  const { sortMethod, searchTerm, results } = req.body;
+  try {
+    const savedResults = await Results.create({
+      sortMethod,
+      searchTerm,
+      results,
+    });
+    res.status(201).json(savedResults);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to save results" });
+  }
+};
+
+export const getResults = async (req, res) => {
+  const all = await Results.find().sort({ createdAt: -1 });
+  res.json(all);
+};
