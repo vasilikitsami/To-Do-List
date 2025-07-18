@@ -5,8 +5,6 @@ import {
   addTodo,
   updateTodo,
   deleteTodo,
-  getPreferences,
-  updatePreferences,
   getResults,
   saveResults,
 } from "../controllers/toDoController.js";
@@ -15,8 +13,6 @@ import {
 router.route("/").get(getTodos).post(addTodo);
 router.put("/:id", updateTodo);
 router.delete("/:id", deleteTodo);
-
-router.route("/preferences").get(getPreferences).put(updatePreferences);
 
 router.route("/results").get(getResults).post(saveResults);
 

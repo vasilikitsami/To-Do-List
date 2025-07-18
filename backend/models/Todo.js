@@ -21,22 +21,6 @@ const todoSchema = new mongoose.Schema({
 
 export default mongoose.model("Todo", todoSchema);
 
-const preferencesSchema = new mongoose.Schema(
-  {
-    sortMethod: {
-      type: String,
-      default: "default",
-    },
-    searchTerm: {
-      type: String,
-      default: "",
-    },
-  },
-  { timestamps: true }
-);
-
-export const Preferences = mongoose.model("Preferences", preferencesSchema);
-
 // ===== Results Schema =====
 const resultsSchema = new mongoose.Schema(
   {
