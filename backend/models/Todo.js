@@ -24,9 +24,12 @@ const todoSchema = new mongoose.Schema({
   },
 });
 
+// Enforce uniqueness
+todoSchema.index({ user_id: 1, task: 1 }, { unique: true });
+
 export default mongoose.model("Todo", todoSchema);
 
-// ===== Results Schema =====
+//Results Schema
 const resultsSchema = new mongoose.Schema(
   {
     sortMethod: String,

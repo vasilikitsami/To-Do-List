@@ -1,96 +1,216 @@
-# To-Do List Application
+# MERN Crash Course ToDo List
 
-A full-stack To-Do app built with the MERN stack: **MongoDB**, **Express**, **React**, and **Node.js**.
-
-This application allows users to create, edit, delete, search, filter and sort tasks, while also saving user preferences.
+This project is a full-stack To-Do List application built with the MERN stack: **MongoDB**, **Express.js**, **React**, and **Node.js**. It allows users to register, log in, and securely manage their personal tasks. Each user can create, view, update, and delete their own to-do items, with all data securely stored in a MongoDB database.
 
 ---
 
 ## Table of Contents
 
-- 📌 [Project Overview]
-- 🧩 [Project Architecture]
-- 🛠️ [Installation & Setup]
-- 🗄️ [Database Schema]
-- 🌐 [API Endpoints]
-- 💻 [Frontend Functionality]
-  - ✅ [Add / Edit / Delete Todos]
-  - 🔍 [Live Search & Filter]
-  - 🔃 [Sorting]
-  - 🧠 [User Preferences]
+- [MERN Crash Course ToDo List](#mern-crash-course-todo-list)
 
+  - [Table of Contents](#table-of-contents)
+  - [Project Description](#project-description)
+  - [Project Structure](#project-structure)
+  - [Backend Structure](#backend-structure)
 
+    - [How the components connect with each other](#how-the-components-connect-with-each-other)
+    - [Backend Setup](#backend-setup)
+    - [Database Structure](#database-structure)
+    - [API Endpoints](#api-endpoints)
+    - [Controllers](#controllers)
+    - [Middleware](#middleware)
 
-## 📌 Project Overview
+  - [Frontend](#frontend)
 
-This is a full-stack CRUD To-Do application where users can:
-- Add new tasks
-- Edit or delete existing tasks
-- Mark tasks as complete or incomplete
-- Search by task name
-- Filter only incomplete tasks
-- Sort by creation date or alphabetically
-- Save sorting and search preferences in the database
+    - [Features](#features)
+    - [Frontend Installation & Setup](#frontend-installation--setup)
+    - [Frontend Structure](#frontend-structure)
 
-The backend is built with **Node.js**, **Express**, and **MongoDB**, while the frontend is implemented using **React** (with Vite).
+      - [Entry Points](#entry-points)
+      - [Components](#components)
+      - [Pages](#pages)
+      - [Hooks & Context](#hooks--context)
+
+    - [Core Functionality](#core-functionality)
+
+      - [Task Creation](#task-creation)
+      - [Completion Toggle](#completion-toggle)
+      - [Deletion](#deletion)
+      - [Live Search](#live-search)
+      - [Filter by Incomplete](#filter-by-incomplete)
+      - [Sorting](#sorting)
 
 ---
 
-## 🧩 Project Architecture
+## Project Description
 
-To-Do-List/
+This project demonstrates a basic To-Do app where users can create, read, update, and delete tasks. The backend is powered by Node.js and Express, with data stored in MongoDB using Mongoose ODM. The frontend is built with React and styled with Tailwind CSS. It features live filtering, sorting, and JWT-based authentication.
 
-├── backend/
+---
 
-│ ├── controllers/ # Request handling logic (CRUD, preferences)
+## Project Structure
 
-│ ├── models/ # Mongoose schemas (Todo, Preferences, Results)
+```
+full-stack-todo/
+├── backend/          # Backend (Node.js/Express)
+├── frontend/         # Frontend (React)
+├── .env              # Environment variables
+├── package.json      # Root metadata (backend)
+└── README.md         # This file
+```
 
-│ ├── routes/ # API endpoints, mapped to controller functions
+---
 
-│ ├── config/ # MongoDB connection
+## Backend Structure
 
-│ ├── seed.js # Preload sample data
+```
+backend/
+├── config/
+│   └── mongo-db.js            # MongoDB connection logic
+├── controllers/
+│   ├── toDoController.js      # Task CRUD logic
+│   └── userController.js      # Signup/Login logic
+├── middleware/
+│   └── requireAuth.js         # JWT validation middleware
+├── models/
+│   ├── Todo.js                # To-do item schema
+│   └── User.js                # User schema
+├── routes/
+│   ├── toDoRoutes.js          # /api/todos endpoint
+│   └── userRoutes.js          # /api/users endpoint
+├── server.js                  # App entry point
+└── .env                       # Environment variables (MONGO_URI, SECRET)
+```
 
-│ └── server.js # App initialization and Express setup
+### How the components connect with each other
 
-├── frontend/
+- `server.js` initializes the Express server, connects to MongoDB, and registers routes.
+- `routes` define endpoints and use `requireAuth` middleware.
+- `controllers` contain business logic for handling HTTP requests.
+- `models` define MongoDB schemas.
+- `requireAuth.js` protects the todo routes with JWT validation.
 
-│ ├── components/ # All UI components (ToDo, Form, Filters, Edit, etc.)
+---
 
-│ ├── App.jsx # Main 
-
-│ └── main.jsx # React entry point
-
-├── .env # Environment config
-
-├── package.json # Dependencies and scripts
-
-└── README.md # Project documentation
-
-## 🛠️ Installation & Setup
-
-### 🔧 Backend
+### Backend Setup
 
 ```bash
 cd backend
 npm install
+npm run dev
 ```
 
 Create a `.env` file:
 
-```env
-MONGO_URI=mongodb://127.0.0.1:27017/todolist
-PORT=4001
+```
+MONGO_URI=your_mongo_connection_string
+SECRET=your_jwt_secret
 ```
 
-Start the backend:
+---
 
-```bash
-npm run dev
+### Database Structure
+
+#### Todo Schema
+
+```js
+const todoSchema = new mongoose.Schema({
+  task: { type: String, required: true },
+  completed: { type: Boolean, default: false },
+  isEditing: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+  user_id: { type: String, required: true },
+});
 ```
 
-### 💻 Frontend
+#### User Schema
+
+```js
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+});
+```
+
+---
+
+### API Endpoints
+
+| Method | Endpoint          | Description       |
+| ------ | ----------------- | ----------------- |
+| GET    | /api/todos        | Get user's todos  |
+| POST   | /api/todos        | Create a todo     |
+| PUT    | /api/todos/\:id   | Update a todo     |
+| DELETE | /api/todos/\:id   | Delete a todo     |
+| POST   | /api/users/login  | Login a user      |
+| POST   | /api/users/signup | Signup a new user |
+
+> Note: All `/api/todos/*` routes require Authorization header: `Bearer <token>`
+
+---
+
+### Controllers
+
+- `toDoController.js`: Logic for CRUD operations
+- `userController.js`: Logic for user registration/login & JWT issuing
+
+---
+
+### Middleware
+
+- `requireAuth.js`: Validates JWT token and appends `req.user` before accessing protected routes
+
+---
+
+## Frontend
+
+```
+frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── CheckBox.jsx
+│   │   ├── EditTodoForm.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── SortOptions.jsx
+│   │   ├── ToDo.jsx
+│   │   ├── ToDoForm.jsx
+│   │   └── ToDoWrapper.jsx
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   ├── hooks/
+│   │   ├── useAuthContext.jsx
+│   │   ├── useLogin.jsx
+│   │   ├── useLogout.jsx
+│   │   └── useSignup.jsx
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   └── Signup.jsx
+│   ├── utils.js
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── package.json
+└── vite.config.js
+```
+
+---
+
+### Features
+
+- ✅ Create, edit, and delete todos
+- 🔒 JWT Authentication
+- 🔁 Live state updates (no refresh)
+- 🔍 Search bar filtering
+- ✅ Show only incomplete checkbox
+- ↕️ Sort by creation or alphabetically
+
+---
+
+### Frontend Installation & Setup
 
 ```bash
 cd frontend
@@ -100,94 +220,74 @@ npm run dev
 
 ---
 
-## 🗄️ Database Schema
+### Entry Points
 
-### ✅ `Todo` Model
+- `main.jsx`: Mounts React app to root
+- `App.jsx`: Handles routes and layout
+
+---
+
+### Components
+
+- `ToDoWrapper.jsx`: Central todo logic, handles API and filtering
+- `ToDoForm.jsx`, `EditTodoForm.jsx`: Add/edit task forms
+- `Todo.jsx`: Single todo display with edit/delete buttons
+- `SortOptions.jsx`, `SearchBar.jsx`, `CheckBox.jsx`: UI filters
+- `Navbar.jsx`: Navigation bar
+
+---
+
+### Pages
+
+- `Login.jsx`: Login form
+- `Signup.jsx`: Signup form
+
+---
+
+### Hooks & Context
+
+- `AuthContext.jsx`: Provides `user` object to all components
+- `useLogin`, `useSignup`, `useLogout`: Hook logic for auth
+
+---
+
+## Core Functionality
+
+### Task Creation
+
+- User submits form → API POST `/api/todos`
+- UI updates instantly using `setTodos([savedTodo, ...prev])`
+
+### Completion Toggle
+
+- Checkbox sends PUT request → backend updates task
+
+### Deletion
+
+- Button triggers DELETE request
+- UI filters out deleted task
+
+### Live Search
 
 ```js
-{
-  task: String,
-  completed: Boolean,
-  isEditing: Boolean,
-  createdAt: Date
-}
+todos.filter((todo) =>
+  todo.task.toLowerCase().includes(searchTerm.toLowerCase())
+);
 ```
 
-### ⚙️ `Preferences` Model
+### Filter by Incomplete
 
 ```js
-{
-  sortMethod: String,
-  searchTerm: String
-}
+todos.filter((todo) => !todo.completed);
 ```
 
-### 📊 `Results` Model
+### Sorting
 
 ```js
-{
-  sortMethod: String,
-  searchTerm: String,
-  results: [
-    {
-      task: String,
-      completed: Boolean,
-      createdAt: Date
-    }
-  ]
-}
+todos.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+todos.sort((a, b) => a.task.localeCompare(b.task));
 ```
 
 ---
 
-## 🌐 API Endpoints
-
-| Method | Endpoint             | Description                            |
-|--------|----------------------|----------------------------------------|
-| GET    | `/api/todos`         | Get all todos                          |
-| POST   | `/api/todos`         | Create a new todo                      |
-| PUT    | `/api/todos/:id`     | Update a todo                          |
-| DELETE | `/api/todos/:id`     | Delete a todo                          |
-| GET    | `/api/preferences`   | Fetch saved sort/search preferences    |
-| PUT    | `/api/preferences`   | Save updated preferences               |
-| POST   | `/api/results`       | Save filtered results                  |
-| GET    | `/api/users`         | Return sample users (testing)          |
-
----
-
-## 💻 Frontend Functionality
-
-### ✅ Add / Edit / Delete Todos
-
-- Create a task using the form
-- Inline edit existing todos
-- Delete individual tasks
-- Completion toggle applies strike-through
-
-### 🔍 Live Search & Filter
-
-- Search field updates the task list in real time
-- A checkbox filters only incomplete tasks
-
-### 🔃 Sorting
-
-- Sort tasks by:
-  - Alphabetically
-  - By creation date
-  - Default order
-
-### 🧠 User Preferences
-
-- When sort/search settings are changed, they are:
-  - Saved in MongoDB
-  - Re-applied on page reload
-
-
-## 🧑‍💻 Author
-Developed by Vasiliki Tsami as part of a full-stack internship exercise.
-
-
-
-
-
-
+**Author:** Vasiliki Tsami

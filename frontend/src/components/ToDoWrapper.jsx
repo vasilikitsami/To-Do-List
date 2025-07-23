@@ -74,7 +74,7 @@ export const ToDoWrapper = () => {
 
     if (res.ok) {
       const saved = await res.json();
-      setTodos([...todos, saved]);
+      setTodos((prevTodos) => [saved, ...prevTodos]);
     }
   };
 

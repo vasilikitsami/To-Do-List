@@ -14,8 +14,6 @@ export const getTodos = async (req, res) => {
 
 export const addTodo = async (req, res) => {
   try {
-    console.log("REQ.USER IN addTodo:", req.user);
-
     const user_id = req.user._id; // Get user ID from the authenticated request
     const newTodo = new Todo({ ...req.body, user_id }); // Include user_id in the new todo
     await newTodo.save();
