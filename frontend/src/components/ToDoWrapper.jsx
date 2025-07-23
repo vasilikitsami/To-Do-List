@@ -148,7 +148,6 @@ export const ToDoWrapper = () => {
     return matchesSearch && matchesCompletion; //only tasks that meet both criteria are returned
   });
 
-  console.log("Rendering todos:", filteredTodos);
   console.log("todos:", todos);
 
   return (

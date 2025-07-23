@@ -2,6 +2,7 @@ import Todo from "../models/Todo.js";
 
 export const getTodos = async (req, res) => {
   try {
+    const user_id = req.user._id; // Get user ID from the authenticated request
     const todos = await Todo.find();
     console.log("Fetched todos:", todos);
     res.status(200).json(todos);
@@ -13,7 +14,10 @@ export const getTodos = async (req, res) => {
 
 export const addTodo = async (req, res) => {
   try {
-    const newTodo = new Todo(req.body);
+    console.log("REQ.USER IN addTodo:", req.user);
+
+    const user_id = req.user._id; // Get user ID from the authenticated request
+    const newTodo = new Todo({ ...req.body, user_id }); // Include user_id in the new todo
     await newTodo.save();
     res.status(200).json(newTodo);
   } catch (error) {
