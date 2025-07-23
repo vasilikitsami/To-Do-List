@@ -7,15 +7,11 @@ import { SortOptions } from "./SortOptions";
 import { SearchBar } from "./SearchBar";
 import { CheckBox } from "./CheckBox";
 import { sortTodosByMethod } from "../utils";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export const ToDoWrapper = () => {
-  //Fetch todo list from backend and store it in state
-  useEffect(() => {
-    fetch("http://localhost:4001/api/todos")
-      .then((res) => res.json())
-      .then((data) => setTodos(data))
-      .catch((error) => console.error("Failed to fetch todos:", error));
-  }, []);
+  //Fetch todo list from backend and store it in state only if user is logged in
+  const { user } = useAuthContext();
 
   const [todos, setTodos] = useState([]);
 
@@ -24,6 +20,31 @@ export const ToDoWrapper = () => {
   const [searchTerm, setSearchTerm] = useState(""); //save what is written in search bar
 
   const [showOnlyIncomplete, setShowOnlyIncomplete] = useState(false); //if true -> only incompleted tasks
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const response = await fetch("http://localhost:4001/api/todos", {
+          headers: {
+            Authorization: `Bearer ${user.token}`, //send token to backend
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setTodos(data);
+        } else {
+          console.error("Failed to fetch todos:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+      }
+    };
+    if (user) {
+      fetchTodos();
+    }
+  }, [user]);
 
   //Create new task and add in todos array
   const addTodo = async (todo) => {
@@ -37,7 +58,10 @@ export const ToDoWrapper = () => {
     //load exsisting todos from the backend
     const res = await fetch("http://localhost:4001/api/todos", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`, //send token to backend
+      },
       body: JSON.stringify(newTodo),
     });
 
@@ -45,7 +69,6 @@ export const ToDoWrapper = () => {
       const saved = await res.json();
       setTodos([...todos, saved]);
     }
-    setTodos([...todos, newTodo]);
   };
 
   //Update completion of task
@@ -59,7 +82,10 @@ export const ToDoWrapper = () => {
     //use fetch to update the task in the backend
     await fetch(`http://localhost:4001/api/todos/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`, //send token to backend
+      },
       body: JSON.stringify(updatedTodo),
     });
 
@@ -69,6 +95,9 @@ export const ToDoWrapper = () => {
   const deleteTodo = async (id) => {
     await fetch(`http://localhost:4001/api/todos/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`, //send token to backend
+      },
     });
 
     setTodos(todos.filter((t) => t._id !== id));
@@ -94,7 +123,10 @@ export const ToDoWrapper = () => {
 
     await fetch(`http://localhost:4001/api/todos/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`, //send token to backend
+      },
       body: JSON.stringify(todoToSend),
     });
 
@@ -116,71 +148,42 @@ export const ToDoWrapper = () => {
     return matchesSearch && matchesCompletion; //only tasks that meet both criteria are returned
   });
 
-  const saveFilteredResults = async () => {
-    const resultsToSave = {
-      sortMethod,
-      searchTerm,
-      results: filteredTodos.map(({ task, completed, createdAt }) => ({
-        task,
-        completed,
-        createdAt,
-      })),
-    };
-    await fetch("http://localhost:4001/api/results", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(resultsToSave),
-    });
-
-    try {
-      const response = await fetch("http://localhost:4001/api/results", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(resultsToSave),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save results");
-      }
-
-      const savedResults = await response.json();
-      console.log("Results saved:", savedResults);
-    } catch (error) {
-      console.error("Error saving results:", error);
-    }
-  };
-
   console.log("Rendering todos:", filteredTodos);
   console.log("todos:", todos);
 
   return (
     <div className="ToDoWrapper">
-      <h1>Get Things Done!</h1>
-      <SearchBar setSearchTerm={setSearchTerm} />
-      <CheckBox
-        showOnlyIncomplete={showOnlyIncomplete}
-        setShowOnlyIncomplete={setShowOnlyIncomplete}
-      />
-      <SortOptions sortMethod={sortMethod} setSortMethod={setSortMethod} />
-      <ToDoForm addTodo={addTodo} />
-      {searchTerm.trim() !== "" && filteredTodos.length === 0 ? (
-        <p style={{ color: "#fff", marginTop: "1rem" }}>
-          No matching tasks found.
-        </p>
+      {!user ? (
+        <p style={{ color: "#fff" }}>Please log in to view your tasks.</p>
       ) : (
-        filteredTodos.map((todo) =>
-          todo.isEditing ? (
-            <EditToDoForm editTodo={editTask} task={todo} key={todo._id} />
+        <>
+          <SearchBar setSearchTerm={setSearchTerm} />
+          <CheckBox
+            showOnlyIncomplete={showOnlyIncomplete}
+            setShowOnlyIncomplete={setShowOnlyIncomplete}
+          />
+          <SortOptions sortMethod={sortMethod} setSortMethod={setSortMethod} />
+          <ToDoForm addTodo={addTodo} />
+          {searchTerm.trim() !== "" && filteredTodos.length === 0 ? (
+            <p style={{ color: "#fff", marginTop: "1rem" }}>
+              No matching tasks found.
+            </p>
           ) : (
-            <Todo
-              task={todo}
-              key={todo._id}
-              toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
-              editTodo={editTodo}
-            />
-          )
-        )
+            filteredTodos.map((todo) =>
+              todo.isEditing ? (
+                <EditToDoForm editTodo={editTask} task={todo} key={todo._id} />
+              ) : (
+                <Todo
+                  task={todo}
+                  key={todo._id}
+                  toggleComplete={toggleComplete}
+                  deleteTodo={deleteTodo}
+                  editTodo={editTodo}
+                />
+              )
+            )
+          )}
+        </>
       )}
     </div>
   );

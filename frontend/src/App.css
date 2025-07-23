@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -26,13 +26,14 @@ h1 {
   font-size: 2rem;
 }
 
-.TodoWrapper {
-  background: #1A1A40;
+.ToDoWrapper {
+  background: #1a1a40;
   padding: 2rem;
   border-radius: 10px;
   width: 100%;
   max-width: 550px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  margin-top: 120px; /* 🟣 this line adds space below the navbar */
 }
 
 .TodoForm {
@@ -127,7 +128,6 @@ h1 {
   transform: scale(1.1);
 }
 
-
 .search-bar {
   display: flex;
   justify-content: center;
@@ -175,4 +175,124 @@ h1 {
 .sort-options select option {
   background: #2c2c5a;
   color: #fff;
+}
+
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1a1a40;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 🌟 Shadow added */
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+  color: white;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-button {
+  background: none;
+  color: white;
+  border: 1px solid #8758ff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-button:hover {
+  background-color: #8758ff;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.auth-form-wrapper {
+  margin-top: -130px; /* Push the form below the fixed navbar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: calc(100vh - 140px);
+}
+form.login h2,
+form.signup h2 {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+form.login label,
+form.signup label {
+  color: #ddd;
+  margin-top: 1rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+form.login input,
+form.signup input {
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #8758ff;
+  background-color: #1a1a40;
+  color: white;
+  margin-top: 0.3rem;
+}
+.nav-loggedin {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-email {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-message {
+  margin-top: 50px; /* pushes it visibly below the fixed navbar */
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+.nav-user {
+  margin-top: 10px; /* space below the navbar */
+  color: #ffffff; /* pure white */
+  font-weight: 600;
+  font-size: 1rem;
+  margin-right: 1rem;
 }
