@@ -22,6 +22,13 @@ export const ToDoWrapper = () => {
   const [showOnlyIncomplete, setShowOnlyIncomplete] = useState(false); //if true -> only incompleted tasks
 
   useEffect(() => {
+    const handleLogout = () => setTodos([]);
+
+    window.addEventListener("userLoggedOut", handleLogout);
+    return () => window.removeEventListener("userLoggedOut", handleLogout);
+  }, []);
+
+  useEffect(() => {
     const fetchTodos = async () => {
       try {
         const response = await fetch("http://localhost:4001/api/todos", {

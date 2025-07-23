@@ -11,6 +11,7 @@ export const useLogout = () => {
 
     //dispatch logout action
     dispatch({ type: "LOGOUT" });
+    window.dispatchEvent(new Event("userLoggedOut"));
     navigate("/");
   };
 

@@ -3,7 +3,7 @@ import Todo from "../models/Todo.js";
 export const getTodos = async (req, res) => {
   try {
     const user_id = req.user._id; // Get user ID from the authenticated request
-    const todos = await Todo.find();
+    const todos = await Todo.find({ user_id }).sort({ createdAt: -1 });
     console.log("Fetched todos:", todos);
     res.status(200).json(todos);
   } catch (error) {
